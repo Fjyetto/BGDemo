@@ -1,0 +1,6 @@
+{"sl":[],
+"meshes":[{"Scale":[0.8999999761581421,0.8999999761581421,0.8999999761581421],"Path":"/models/Map.glb","Mat":4,"Position":[0,-50,0]}],
+"plevel":[{"Size":[1,13],"Floor":0,"Position":[-16,14]},{"Size":[3.2,3.2],"Floor":0,"Position":[6,12]}],"zonetriggers":[{"function":{"body":"let s = ie.sfx.cd[Math.floor(Math.random()*2)]; s.detune=Math.floor(Math.random()*2400)-1200; s.play();","arguments":"plr, zone, ie"},"Floor":0,"Position":[-31,48],"Enabled":true,"Cooldown":1200,"Size":[3,3]}],
+"boxes":[{"Mat":2,"Position":[-16,0,14],"BoxGeo":[1,6,13]},{"Mat":0,"Position":[0,-3,0],"BoxGeo":[12,0.20000000298023225,12]},{"Mat":0,"Position":[0,-3,125.5],"BoxGeo":[2,0.20000000298023225,239]},{"Mat":2,"Position":[-5,0,233],"BoxGeo":[1,8,13]}],
+"sprites":[{"Mat":3,"Position":[-4,-1.5,21]}],"physobj":[],"lights":[{"Color":15727871,"Distance":90,"Strength":0.5,"Position":[0,14,13]}],
+"spheres":[{"Geo":[360,16,8],"Rotation":[0,0,0],"Mat":1,"Position":[0,0,0],"Name":"Sky","Scene":1}]}
