@@ -57,17 +57,21 @@ function rad(deg) {
 function addCube(sizes,Pos,Mat,np,Rot=[0,0,0]){
 	let Bg = new THREE.BoxGeometry(sizes[0],sizes[1],sizes[2])
 	const geometry = Bg;
-	const ncube = new THREE.Mesh( geometry,Mat.clone() );
-	if (sizes[0]<sizes[1]){
-		if (sizes[0]<sizes[2]){ // s0
-			ncube.material.map.repeat.set(1,1);//sizes[2],sizes[1])
-		}else{ // s2
-			ncube.material.map.repeat.set(sizes[0],sizes[1])
-		}
-	}else{
-		if (sizes[1]<sizes[2]){ // s1
-			ncube.material.map.repeat.set(sizes[0],sizes[2])
-		}
+	let ncube;
+	if (Mat.map && Mat.map.wrapS == THREE.RepeatWrapping){
+		ncube = new THREE.Mesh( geometry,Mat.clone() );
+		let OGrepeat = [ncube.material.map.repeat.x,ncube.material.map.repeat.y];
+		if (sizes[0]<sizes[1]){
+			if (sizes[0]<sizes[2]){ // s0
+				ncube.material.map.repeat.set(sizes[2]*OGrepeat[0],sizes[1]*OGrepeat[1]);
+			}else{ // s2
+				ncube.material.map.repeat.set(sizes[0]*OGrepeat[0],sizes[1]*OGrepeat[1]);
+			}
+		}else if (sizes[1]<sizes[2]){ // s1
+				ncube.material.map.repeat.set(sizes[0]*OGrepeat[0],sizes[2]*OGrepeat[1]);
+			}
+	} else {
+		ncube = new THREE.Mesh( geometry,Mat);
 	}
 	scene.add( ncube );
 	ncube.position.copy(Pos);
@@ -289,6 +293,7 @@ class controller { /* THIS IS THE CONTROLLER CLASS DEFINITION!!!! Basically the 
 		this.basecheight=cheight;
 		this.radius = radius;
 		this.pos = pos;
+		this.nextpos = pos;
 		this.posy = 0;
 		this.floor = 0;
 		this.vel = 0;
@@ -327,20 +332,20 @@ class controller { /* THIS IS THE CONTROLLER CLASS DEFINITION!!!! Basically the 
 			this.cheight = this.basecheight;
 		}
 		
-		let newpos = this.pos.clone().add(new THREE.Vector2(-Math.sin(this.angle)*this.vel,-Math.cos(this.angle)*this.vel));
+		this.nextpos = this.pos.clone().add(new THREE.Vector2(-Math.sin(this.angle)*this.vel,-Math.cos(this.angle)*this.vel));
 		
 		// collision checking with boxes on same floor
 		let collision = false;
 		let collider = false;
 		if (this.floor!=undefined && pLevel[this.floor]!=undefined){
 			pLevel[this.floor].forEach((box)=>{
-				if (checkForCollision(box,newpos,this.radius)) {collision = true; collider=box;}
+				if (checkForCollision(box,this.nextpos,this.radius)) {collision = true; collider=box;}
 			});
 		}
 		// collision checking with triggers on same floor
 		if (this.floor!=undefined && ztrig[this.floor]!=undefined){
 			ztrig[this.floor].forEach((box)=>{
-				if (checkForCollision(box,newpos,this.radius)) {
+				if (checkForCollision(box,this.nextpos,this.radius)) {
 					if (box.Enabled){
 						let f = new Function(box.function.arguments,box.function.body);
 						f(this,box,indexedElements);
@@ -358,39 +363,40 @@ class controller { /* THIS IS THE CONTROLLER CLASS DEFINITION!!!! Basically the 
 			t="Colliding";
 			// figure out how far you can go
 			if (wallGlitch){ // quirky but cheap wallsliding :3
-				let newpos = this.pos.clone().add(new THREE.Vector2(0,-Math.cos(this.angle)*this.vel)); // Y ONLY
-				if (!checkForCollision(collider,newpos,this.radius)) this.pos=newpos; // this checks if the first wall encountered is still being collided with if moving only on Y
+				this.nextpos = this.pos.clone().add(new THREE.Vector2(0,-Math.cos(this.angle)*this.vel)); // Y ONLY
+				if (!checkForCollision(collider,this.nextpos,this.radius)) this.pos=this.nextpos; // this checks if the first wall encountered is still being collided with if moving only on Y
 				else{
-					let newpos = this.pos.clone().add(new THREE.Vector2(-Math.sin(this.angle)*this.vel,0)); // X ONLY
-					if (!checkForCollision(collider,newpos,this.radius)) this.pos=newpos; // this checks if the first blah blah blah only on X
+					this.nextpos = this.pos.clone().add(new THREE.Vector2(-Math.sin(this.angle)*this.vel,0)); // X ONLY
+					if (!checkForCollision(collider,this.nextpos,this.radius)) this.pos=this.nextpos; // this checks if the first blah blah blah only on X
 				}
 			}else{
-				let newpos = this.pos.clone().add(new THREE.Vector2(0,-Math.cos(this.angle)*this.vel)); // Y ONLY
+				this.nextpos = this.pos.clone().add(new THREE.Vector2(0,-Math.cos(this.angle)*this.vel)); // Y ONLY
 				collision = false;
 				// this is a collision check
 				pLevel[this.floor].forEach((box)=>{
-					if (checkForCollision(box,newpos,this.radius)) {collision = true; collider=box;}
+					if (checkForCollision(box,this.nextpos,this.radius)) {collision = true; collider=box;}
 				});
 				// i need to turn this into a function
-				if (!collision) this.pos=newpos;
+				if (!collision) this.pos=this.nextpos;
 				else{
-					let newpos = this.pos.clone().add(new THREE.Vector2(-Math.sin(this.angle)*this.vel,0)); // X ONLY
+					this.nextpos = this.pos.clone().add(new THREE.Vector2(-Math.sin(this.angle)*this.vel,0)); // X ONLY
 					collision = false;
 					// this is a collision check
 					pLevel[this.floor].forEach((box)=>{
-						if (checkForCollision(box,newpos,this.radius)) {collision = true; collider=box;}
+						if (checkForCollision(box,this.nextpos,this.radius)) {collision = true; collider=box;}
 					});
 					// i need to turn this into a function
-					if (!collision) this.pos=newpos;
+					if (!collision) this.pos=this.nextpos;
 				}
 			}
 		}
 		else {
 			t="Not Colliding";
-			this.pos = newpos;
+			this.pos = this.nextpos;
 		}
 	}
 }
+// pos, cheight, radius
 let plr = new controller(new THREE.Vector2(-108,354),.2,1.2);
 
 function mousemov(event){

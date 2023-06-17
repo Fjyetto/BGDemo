@@ -38,12 +38,13 @@ function addSprite(texture,mafil,mifil){
 	Materials.push(sm);
 }
 
-addMat('textures/concrete.png',THREE.NearestFilter,THREE.NearestMipmapNearestFilter,[2,2]);
+addMat('textures/concrete.png',THREE.NearestFilter,THREE.NearestMipmapNearestFilter,[1,1]);
 addSprite('textures/gunc.png',THREE.NearestFilter,THREE.NearestFilter);
 addMat('textures/ground.png',THREE.NearestFilter,THREE.NearestMipmapNearestFilter); // id 4
 addMat('textures/sqb3d.png',THREE.NearestFilter,THREE.NearestMipmapNearestFilter); 
-addMat('textures/wooden plankes.png',THREE.NearestFilter,THREE.NearestMipmapNearestFilter,[2,1]);
-addMat('textures/concrete2.png',THREE.NearestFilter,THREE.NearestMipmapNearestFilter,[3,3]);
-//addSColor(0xEDE2D2);
+addMat('textures/wooden plankes.png',THREE.NearestFilter,THREE.NearestMipmapNearestFilter,[0.2,0.4]);
+addMat('textures/concrete2.png',THREE.NearestFilter,THREE.NearestMipmapNearestFilter,[0.3,0.3]);
+addSColor(0xc612fe); // 8
+addSColor(0x000000); // 9
 
 export {Materials}
