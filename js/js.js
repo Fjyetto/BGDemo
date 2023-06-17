@@ -57,7 +57,18 @@ function rad(deg) {
 function addCube(sizes,Pos,Mat,np,Rot=[0,0,0]){
 	let Bg = new THREE.BoxGeometry(sizes[0],sizes[1],sizes[2])
 	const geometry = Bg;
-	const ncube = new THREE.Mesh( geometry,Mat );
+	const ncube = new THREE.Mesh( geometry,Mat.clone() );
+	if (sizes[0]<sizes[1]){
+		if (sizes[0]<sizes[2]){ // s0
+			ncube.material.map.repeat.set(1,1);//sizes[2],sizes[1])
+		}else{ // s2
+			ncube.material.map.repeat.set(sizes[0],sizes[1])
+		}
+	}else{
+		if (sizes[1]<sizes[2]){ // s1
+			ncube.material.map.repeat.set(sizes[0],sizes[2])
+		}
+	}
 	scene.add( ncube );
 	ncube.position.copy(Pos);
 	ncube.rotation.copy(new THREE.Euler(rad(Rot[0]),rad(Rot[1]),rad(Rot[2]),'XYZ'));
@@ -169,7 +180,12 @@ function loadLevelData(response,mode,scale=new THREE.Vector3(1,1,1),offset=new T
 					}
 					console.log(mesh,gltf);
 					// put undefined or material 0 will not work (0 == false == "")
- 					if (mesh.Mat!=undefined) {gltf.scene.children[0].material = Materials[mesh.Mat]; }
+ 					if (mesh.Mat!=undefined) {
+						gltf.scene.children[0].material = Materials[mesh.Mat]; 
+					} else {
+						gltf.scene.children[0].material.map.minFilter = THREE.NearestFilter;
+						gltf.scene.children[0].material.map.magFilter = THREE.NearestFilter;
+					}
 					scene.add(gltf.scene);
 					if (mesh.Name!=undefined){
 						indexedElements[mesh.Name]=gltf;
@@ -375,7 +391,7 @@ class controller { /* THIS IS THE CONTROLLER CLASS DEFINITION!!!! Basically the 
 		}
 	}
 }
-let plr = new controller(new THREE.Vector2(0,252),.2,1.2);
+let plr = new controller(new THREE.Vector2(-108,354),.2,1.2);
 
 function mousemov(event){
 	//CMYV-=event.movementX/400;
