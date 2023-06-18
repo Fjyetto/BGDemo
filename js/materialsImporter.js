@@ -38,7 +38,7 @@ function addSprite(texture,mafil,mifil){
 	Materials.push(sm);
 }
 
-addMat('textures/concrete.png',THREE.NearestFilter,THREE.NearestMipmapNearestFilter,[1,1]);
+addMat('textures/concrete.png',THREE.NearestFilter,THREE.NearestMipmapNearestFilter,[0.2,0.2]);
 addSprite('textures/gunc.png',THREE.NearestFilter,THREE.NearestFilter);
 addMat('textures/ground.png',THREE.NearestFilter,THREE.NearestMipmapNearestFilter); // id 4
 addMat('textures/sqb3d.png',THREE.NearestFilter,THREE.NearestMipmapNearestFilter); 
@@ -46,5 +46,7 @@ addMat('textures/wooden plankes.png',THREE.NearestFilter,THREE.NearestMipmapNear
 addMat('textures/concrete2.png',THREE.NearestFilter,THREE.NearestMipmapNearestFilter,[0.3,0.3]);
 addSColor(0xc612fe); // 8
 addSColor(0x000000); // 9
+addSColor(0x9d0000); // 10
+addSprite('textures/bell.png',THREE.NearestFilter,THREE.NearestFilter);
 
 export {Materials}

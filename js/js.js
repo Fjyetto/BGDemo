@@ -55,21 +55,26 @@ function rad(deg) {
 }
 
 function addCube(sizes,Pos,Mat,np,Rot=[0,0,0]){
-	let Bg = new THREE.BoxGeometry(sizes[0],sizes[1],sizes[2])
-	const geometry = Bg;
+	const geometry = new THREE.BoxGeometry(sizes[0],sizes[1],sizes[2])
 	let ncube;
 	if (Mat.map && Mat.map.wrapS == THREE.RepeatWrapping){
+		
 		ncube = new THREE.Mesh( geometry,Mat.clone() );
-		let OGrepeat = [ncube.material.map.repeat.x,ncube.material.map.repeat.y];
-		if (sizes[0]<sizes[1]){
-			if (sizes[0]<sizes[2]){ // s0
+		ncube.material.map = ncube.material.map.clone();
+		let OGrepeat = [ncube.material.map.clone().repeat.x,ncube.material.map.clone().repeat.y];
+		let smallestsize = Math.min(...sizes);
+		switch (smallestsize){
+		case sizes[0]: // s0
 				ncube.material.map.repeat.set(sizes[2]*OGrepeat[0],sizes[1]*OGrepeat[1]);
-			}else{ // s2
+				break;
+		case sizes[2]: // s2
 				ncube.material.map.repeat.set(sizes[0]*OGrepeat[0],sizes[1]*OGrepeat[1]);
-			}
-		}else if (sizes[1]<sizes[2]){ // s1
+				break;
+		case sizes[1]: // s1
 				ncube.material.map.repeat.set(sizes[0]*OGrepeat[0],sizes[2]*OGrepeat[1]);
-			}
+				break;
+		}
+		
 	} else {
 		ncube = new THREE.Mesh( geometry,Mat);
 	}
