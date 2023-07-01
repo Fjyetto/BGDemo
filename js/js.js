@@ -328,7 +328,6 @@ class controller { /* THIS IS THE CONTROLLER CLASS DEFINITION!!!! Basically the 
 		if (!(Presses[0]==true||Presses[1]==true||Presses[2]==true||Presses[3]==true)) this.vel = Math.max(this.vel-velEntropy,0); // Multiplication-free entropy !?
 		else this.vel = Math.min(this.vel,this.myMaxSpeed);
 		
-		
 		if (crouching) {this.cheight = -1.3;this.myMaxSpeed=cMaxSpeed;} else {
 			if (this.sprinting) 
 				this.myMaxSpeed=.6;
@@ -460,7 +459,6 @@ window.addEventListener("keydown", (event) => {
 			plr.sprinting = true;
 			break;
 	}
-	
 }, true);
 
 window.addEventListener("keyup", (event) => {
@@ -490,16 +488,6 @@ window.addEventListener("keyup", (event) => {
 }, true);
 
 const ra = (Math.PI/180)*90;
-
-/*
-// Create the texture that will store our result
-
-let bufferTexture = new THREE.WebGLRenderTarget( 20, 20, { minFilter: THREE.LinearFilter, magFilter: THREE.NearestFilter});
-let reterial = new THREE.MeshBasicMaterial({map:bufferTexture});
-let boxtGeometry = new THREE.BoxGeometry( 2, 2, .3 );
-let boxtObject = new THREE.Mesh( boxtGeometry, reterial );
-//boxtObject.position.set(new THREE.Vector3(12,0,62.4));
-scene.add(boxtObject);*/
 
 let debug = false;
 
