@@ -263,6 +263,7 @@ const surfacepoints = {
 	250 : -5.6,
 	271 : -4.3,
 	517 : -4.3,
+	533 : -8,
 	548 : -17.9,
 	558 : -34.7,
 	560 : -71,
@@ -273,14 +274,15 @@ const surfacepoints = {
 function calculateInter(points,x){
 	if (points[x]) return points[x]
 	else {
-		let mini = Math.max(...Object.keys(points));
-		let maxi = Math.min(...Object.keys(points));
+		let mini = Math.min(...Object.keys(points)); 
+		let maxi = Math.max(...Object.keys(points)); 
 		for (var k in points){
-			if (k<x) mini = Math.min(mini,k);
-			if (k>x) maxi = Math.max(maxi,k);
+			if (k<x) mini = Math.max(mini,k);
+			if (k>x) maxi = Math.min(maxi,k);
 		}
+		console.log(mini,x,maxi);
 		let a = (maxi-x)/(maxi-mini);
-		return (1-a)*(points[maxi]-points[mini])+points[mini];
+		return (1-a)*points[maxi]+a*points[mini];
 		
 	}
 }
@@ -403,7 +405,7 @@ class controller { /* THIS IS THE CONTROLLER CLASS DEFINITION!!!! Basically the 
 		
 		// custom big gunchus surface
 		if (this.floor==0){
-			this.posy = 0; // for now
+			this.posy = calculateInter(surfacepoints,this.pos.length())+4.5; // for now
 		}
 		
 		if (collision && !this.tp) {
@@ -629,7 +631,7 @@ function controls(){
 	camera.quaternion.setFromEuler(new THREE.Euler(CX,CY,0,'YZX'));
 	
 	posD.innerHTML = '<br>X: '+Math.round(camera.position.x*100)/100+' Y: '+Math.round(camera.position.y*100)/100+' Z: '+Math.round(camera.position.z*100)/100;
-	speD.innerHTML = 'Velocity: '+plr.vel+"<br>Angle: "+plr.angle+"<br>Floor: "+plr.floor+"<br>"+t;
+	speD.innerHTML = 'Velocity: '+plr.vel+"<br>Angle: "+plr.angle+"<br>Floor: "+plr.floor+"<br>"+t+"<br>Length:"+plr.pos.length();
 	
 	camera.position.set(plr.pos.x,plr.cheight+plr.posy,plr.pos.y); //set cam position
 	//camera.position.set(plr.pos.x,plr.posy-1,plr.pos.y); //cam to physbody
