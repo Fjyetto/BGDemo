@@ -311,9 +311,17 @@ class controller { /* THIS IS THE CONTROLLER CLASS DEFINITION!!!! Basically the 
 		this.body.addShape(cyls);
 		world.addBody(this.body);
 		this.sprinting = false;
+		this.tp = false;
 	}
 	init(){
 		
+	}
+	
+	teleport(x,z,y,f){
+		this.floor = f;
+		this.posy = y;
+		this.tp=true;
+		this.nextpos.set(x, z);
 	}
 	
 	update(){
@@ -363,7 +371,12 @@ class controller { /* THIS IS THE CONTROLLER CLASS DEFINITION!!!! Basically the 
 			});
 		}
 		
-		if (collision) {
+		// custom big gunchus surface
+		if (this.floor==0){
+			this.posy = 0; // for now
+		}
+		
+		if (collision && !this.tp) {
 			t="Colliding";
 			// figure out how far you can go
 			if (wallGlitch){ // quirky but cheap wallsliding :3
@@ -397,6 +410,7 @@ class controller { /* THIS IS THE CONTROLLER CLASS DEFINITION!!!! Basically the 
 		else {
 			t="Not Colliding";
 			this.pos = this.nextpos;
+			this.tp=false;
 		}
 	}
 }

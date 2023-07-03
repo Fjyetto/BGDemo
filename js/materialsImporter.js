@@ -40,7 +40,7 @@ function addSprite(texture,mafil,mifil){
 
 addMat('textures/concrete.png',THREE.NearestFilter,THREE.NearestMipmapNearestFilter,[0.2,0.2]);
 addSprite('textures/gunc.png',THREE.NearestFilter,THREE.NearestFilter);
-addMat('textures/ground.png',THREE.NearestFilter,THREE.NearestMipmapNearestFilter); // id 4
+addMat('textures/ground.png',THREE.NearestFilter,THREE.NearestFilter); // id 4
 addMat('textures/sqb3d.png',THREE.NearestFilter,THREE.NearestMipmapNearestFilter); 
 addMat('textures/wooden plankes.png',THREE.NearestFilter,THREE.NearestMipmapNearestFilter,[0.2,0.4]);
 addMat('textures/concrete2.png',THREE.NearestFilter,THREE.NearestMipmapNearestFilter,[0.3,0.3]);
