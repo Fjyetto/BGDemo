@@ -255,6 +255,8 @@ let grabbing = false;
 let grabt = undefined;
 let wallGlitch = false;
 
+const surfacepoints = [0:-600,221:-600,224:-39,233:-15,250:-5.6,271:-4.3,517:-4.3,548:-17.9,558:-34.7,560:-71,561:-600,1000:-600];
+
 renderer.domElement.onclick = () => {
 	renderer.domElement.requestPointerLock();
 }
