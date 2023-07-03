@@ -255,7 +255,35 @@ let grabbing = false;
 let grabt = undefined;
 let wallGlitch = false;
 
-const surfacepoints = [0:-600,221:-600,224:-39,233:-15,250:-5.6,271:-4.3,517:-4.3,548:-17.9,558:-34.7,560:-71,561:-600,1000:-600];
+const surfacepoints = {
+	0   : -600,
+	221 : -600,
+	224 : -39,
+	233 : -15,
+	250 : -5.6,
+	271 : -4.3,
+	517 : -4.3,
+	548 : -17.9,
+	558 : -34.7,
+	560 : -71,
+	561 : -600,
+	1000: -600
+};
+
+function calculateInter(points,x){
+	if (points[x]) return points[x]
+	else {
+		let mini = Math.max(...Object.keys(points));
+		let maxi = Math.min(...Object.keys(points));
+		for (var k in points){
+			if (k<x) mini = Math.min(mini,k);
+			if (k>x) maxi = Math.max(maxi,k);
+		}
+		let a = (maxi-x)/(maxi-mini);
+		return (1-a)*(points[maxi]-points[mini])+points[mini];
+		
+	}
+}
 
 renderer.domElement.onclick = () => {
 	renderer.domElement.requestPointerLock();
