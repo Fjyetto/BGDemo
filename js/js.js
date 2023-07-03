@@ -405,6 +405,7 @@ class controller { /* THIS IS THE CONTROLLER CLASS DEFINITION!!!! Basically the 
 		
 		// custom big gunchus surface
 		if (this.floor==0){
+			// implement pseudo gravity
 			this.posy = calculateInter(surfacepoints,this.pos.length())+4.5; // for now
 		}
 		
