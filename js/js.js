@@ -471,9 +471,11 @@ class controller { /* THIS IS THE CONTROLLER CLASS DEFINITION!!!! Basically the 
 			}
 		}
 		else {
-			t="Not Colliding";
-			this.pos = this.nextpos;
-			this.tp=false;
+			if (this.getground()-(calculateInter(surfacepoints,this.nextpos.length())+4.5)>=-0.8){
+				t="Not Colliding";
+				this.pos = this.nextpos;
+				this.tp=false;
+			}
 		}
 	}
 }
