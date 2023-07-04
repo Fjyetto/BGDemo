@@ -24,8 +24,12 @@ function addMat(texture,mafil,mifil,wr){
 	Materials.push(mat);
 }
 
-function addSColor(c){
+function addBColor(c){
 	let mat = new THREE.MeshBasicMaterial( { color: c } );
+	Materials.push(mat);
+}
+function addSColor(c){
+	let mat = new THREE.MeshPhongMaterial( { color: c } );
 	Materials.push(mat);
 }
 
@@ -45,8 +49,11 @@ addMat('textures/sqb3d.png',THREE.NearestFilter,THREE.NearestMipmapNearestFilter
 addMat('textures/wooden plankes.png',THREE.NearestFilter,THREE.NearestMipmapNearestFilter,[0.2,0.4]);
 addMat('textures/concrete2.png',THREE.NearestFilter,THREE.NearestMipmapNearestFilter,[0.3,0.3]);
 addSColor(0xc612fe); // 8
-addSColor(0x000000); // 9
+addBColor(0x000000); // 9
 addSColor(0x9d0000); // 10
 addSprite('textures/bell.png',THREE.NearestFilter,THREE.NearestFilter);
+addSColor(0x1b2a35); // 12
+addSColor(0xc4281c); // 13
+addSColor(0xcdcdcd); 
 
 export {Materials}

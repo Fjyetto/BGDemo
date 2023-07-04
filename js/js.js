@@ -256,19 +256,19 @@ let grabt = undefined;
 let wallGlitch = false;
 
 const surfacepoints = {
-	0   : -600,
-	221 : -600,
-	224 : -39,
+	0   : -6000,
+	216 : -6000,
+	220 : -39,
 	233 : -15,
 	250 : -5.6,
 	271 : -4.3,
 	517 : -4.3,
 	533 : -8,
-	548 : -17.9,
-	558 : -34.7,
-	560 : -71,
-	561 : -600,
-	1000: -600
+	550 : -17.5,
+	560 : -33.7,
+	563 : -71,
+	565 : -6000,
+	1000: -6000
 };
 
 function calculateInter(points,x){
@@ -331,6 +331,7 @@ class controller { /* THIS IS THE CONTROLLER CLASS DEFINITION!!!! Basically the 
 		this.radius = radius;
 		this.pos = pos;
 		this.nextpos = pos;
+		this.vy = 0;
 		this.posy = 0;
 		this.floor = 0;
 		this.vel = 0;
@@ -349,6 +350,10 @@ class controller { /* THIS IS THE CONTROLLER CLASS DEFINITION!!!! Basically the 
 		
 	}
 	
+	getground(){
+		return calculateInter(surfacepoints,this.pos.length())+4.5;
+	}
+	
 	teleport(x,z,y,f){
 		this.floor = f;
 		this.posy = y;
@@ -365,8 +370,27 @@ class controller { /* THIS IS THE CONTROLLER CLASS DEFINITION!!!! Basically the 
 		if (pLevel[this.floor]==undefined) pLevel[this.floor]=[];
 		if (ztrig[this.floor]==undefined) ztrig[this.floor]=[];
 		
-		if (!(Presses[0]==true||Presses[1]==true||Presses[2]==true||Presses[3]==true)) this.vel = Math.max(this.vel-velEntropy,0); // Multiplication-free entropy !?
+		if (!(Presses[0]==true||Presses[1]==true||Presses[2]==true||Presses[3]==true)) this.vel = Math.max(this.vel-velEntropy,0); // Multiplication-free speed loss !?
 		else this.vel = Math.min(this.vel,this.myMaxSpeed);
+		
+		if (plr.posy<=plr.getground()+0.2) 
+		{
+			if (this.vy>0.12){
+				this.vy-=0.07;
+			}else if (this.vy<-0.12){
+				this.vy+=0.07;
+			}else {
+				this.vy=0;
+			}
+		} else {
+			if (this.vy>0.03){
+				this.vy-=0.02;
+			}else if (this.vy<-0.03){
+				this.vy+=0.02;
+			}else {
+				this.vy=0;
+			}
+		}
 		
 		if (crouching) {this.cheight = -1.3;this.myMaxSpeed=cMaxSpeed;} else {
 			if (this.sprinting) 
@@ -405,8 +429,12 @@ class controller { /* THIS IS THE CONTROLLER CLASS DEFINITION!!!! Basically the 
 		
 		// custom big gunchus surface
 		if (this.floor==0){
-			// implement pseudo gravity
-			this.posy = calculateInter(surfacepoints,this.pos.length())+4.5; // for now
+			
+			let floor = this.getground();
+			if (this.posy>floor){
+				this.vy-=0.04
+			}
+			this.posy = Math.max(floor,this.posy+this.vy);
 		}
 		
 		if (collision && !this.tp) {
@@ -504,6 +532,9 @@ window.addEventListener("keydown", (event) => {
 			break;
 		case "ShiftLeft":
 			plr.sprinting = true;
+			break;
+		case "Space":
+			if (plr.posy<=plr.getground()+0.2) plr.vy=0.7;
 			break;
 	}
 }, true);
@@ -632,7 +663,7 @@ function controls(){
 	camera.quaternion.setFromEuler(new THREE.Euler(CX,CY,0,'YZX'));
 	
 	posD.innerHTML = '<br>X: '+Math.round(camera.position.x*100)/100+' Y: '+Math.round(camera.position.y*100)/100+' Z: '+Math.round(camera.position.z*100)/100;
-	speD.innerHTML = 'Velocity: '+plr.vel+"<br>Angle: "+plr.angle+"<br>Floor: "+plr.floor+"<br>"+t+"<br>Length:"+plr.pos.length();
+	speD.innerHTML = 'Velocity: '+plr.vel+"<br>Angle: "+plr.angle+"<br>Floor: "+plr.floor+"<br>"+t+"<br>VelY:"+plr.vy;
 	
 	camera.position.set(plr.pos.x,plr.cheight+plr.posy,plr.pos.y); //set cam position
 	//camera.position.set(plr.pos.x,plr.posy-1,plr.pos.y); //cam to physbody
