@@ -280,7 +280,7 @@ function calculateInter(points,x){
 			if (k<x) mini = Math.max(mini,k);
 			if (k>x) maxi = Math.min(maxi,k);
 		}
-		console.log(mini,x,maxi);
+		//console.log(mini,x,maxi);
 		let a = (maxi-x)/(maxi-mini);
 		return (1-a)*points[maxi]+a*points[mini];
 		
@@ -345,6 +345,7 @@ class controller { /* THIS IS THE CONTROLLER CLASS DEFINITION!!!! Basically the 
 		world.addBody(this.body);
 		this.sprinting = false;
 		this.tp = false;
+		this.jumps = 0;
 	}
 	init(){
 		
@@ -380,6 +381,7 @@ class controller { /* THIS IS THE CONTROLLER CLASS DEFINITION!!!! Basically the 
 			}else if (this.vy<-0.12){
 				this.vy+=0.07;
 			}else {
+				this.jumps = 0;
 				this.vy=0;
 			}
 		} else {
@@ -534,7 +536,13 @@ window.addEventListener("keydown", (event) => {
 			plr.sprinting = true;
 			break;
 		case "Space":
-			if (plr.posy<=plr.getground()+0.2) plr.vy=0.7;
+			if (plr.posy<=plr.getground()+0.2){
+				plr.jumps+=1;
+			plr.vy=0.7;}
+			else if (plr.jumps>=1 && plr.jumps<=2) {
+				plr.jumps+=1;
+				plr.vy=0.5;
+			}
 			break;
 	}
 }, true);
