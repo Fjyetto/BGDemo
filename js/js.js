@@ -385,10 +385,10 @@ class controller { /* THIS IS THE CONTROLLER CLASS DEFINITION!!!! Basically the 
 				this.vy=0;
 			}
 		} else {
-			if (this.vy>0.03){
-				this.vy-=0.02;
-			}else if (this.vy<-0.03){
-				this.vy+=0.02;
+			if (this.vy>0.01){
+				this.vy-=0.0015;
+			}else if (this.vy<-0.01){
+				this.vy+=0.0015;
 			}else {
 				this.vy=0;
 			}
@@ -434,7 +434,7 @@ class controller { /* THIS IS THE CONTROLLER CLASS DEFINITION!!!! Basically the 
 			
 			let floor = this.getground();
 			if (this.posy>floor){
-				this.vy-=0.04
+				this.vy-=0.03
 			}
 			this.posy = Math.max(floor,this.posy+this.vy);
 		}
@@ -536,12 +536,33 @@ window.addEventListener("keydown", (event) => {
 			plr.sprinting = true;
 			break;
 		case "Space":
-			if (plr.posy<=plr.getground()+0.2){
-				plr.jumps+=1;
-			plr.vy=0.7;}
+			if (plr.posy<=plr.getground()+0.2) {
+				plr.jumps=1;
+				plr.vy=0.7;
+			}
 			else if (plr.jumps>=1 && plr.jumps<=2) {
 				plr.jumps+=1;
 				plr.vy=0.5;
+			}
+			if (plr.vy==0.5||plr.vy==0.7){
+				let jsf;
+				switch (plr.jumps){
+					case 1:
+						jsf = indexedElements.sfx.ju1[Math.floor(Math.random()*2)]; 
+						jsf.detune=Math.floor(Math.random()*600)-300; 
+						jsf.play();
+						break;
+					case 2:
+						jsf = indexedElements.sfx.ju2[Math.floor(Math.random()*2)];
+						jsf.detune=Math.floor(Math.random()*600)-300; 
+						jsf.play();
+						break;					
+					case 3:
+						jsf = indexedElements.sfx.ju3[Math.floor(Math.random()*2)]; 
+						jsf.detune=Math.floor(Math.random()*600)-300; 
+						jsf.play();
+						break;
+				}
 			}
 			break;
 	}
@@ -671,7 +692,7 @@ function controls(){
 	camera.quaternion.setFromEuler(new THREE.Euler(CX,CY,0,'YZX'));
 	
 	posD.innerHTML = '<br>X: '+Math.round(camera.position.x*100)/100+' Y: '+Math.round(camera.position.y*100)/100+' Z: '+Math.round(camera.position.z*100)/100;
-	speD.innerHTML = 'Velocity: '+plr.vel+"<br>Angle: "+plr.angle+"<br>Floor: "+plr.floor+"<br>"+t+"<br>VelY:"+plr.vy;
+	speD.innerHTML = 'Velocity: '+plr.vel+"<br>Angle: "+plr.angle+"<br>Floor: "+plr.floor+"<br>"+t+"<br>JumpsCounter:"+plr.jumps;
 	
 	camera.position.set(plr.pos.x,plr.cheight+plr.posy,plr.pos.y); //set cam position
 	//camera.position.set(plr.pos.x,plr.posy-1,plr.pos.y); //cam to physbody
@@ -721,7 +742,7 @@ function update(){
 	}
 	
 	if (indexedElements["Sky"]) {
-		indexedElements["Sky"].position.copy(new THREE.Vector3(camera.position.x,0,camera.position.z))
+		indexedElements["Sky"].position.copy(new THREE.Vector3(camera.position.x,camera.position.y,camera.position.z))
 	}
 }
 

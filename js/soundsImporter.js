@@ -17,6 +17,9 @@ function loadSounds(listener){
 	
 	Sounds['sfx'] = newSound('/sounds/button.ogg',false,1,listener);
 	Sounds['cd'] = [newSound('/sounds/fritofrut.ogg',false,1,listener),newSound('/sounds/crackdown.ogg',false,1,listener)];
+	Sounds['ju1'] = [newSound('/sounds/yah1.ogg',false,1,listener),newSound('/sounds/yah2.ogg',false,1,listener)];
+	Sounds['ju2'] = [newSound('/sounds/ha1.ogg',false,1,listener),newSound('/sounds/ha2.ogg',false,1,listener)];
+	Sounds['ju3'] = [newSound('/sounds/hoo1.ogg',false,1,listener),newSound('/sounds/hoo2.ogg',false,1,listener)];
 	
 	return Sounds;
 }
