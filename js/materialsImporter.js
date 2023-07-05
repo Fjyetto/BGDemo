@@ -42,7 +42,7 @@ function addSprite(texture,mafil,mifil){
 	Materials.push(sm);
 }
 
-// 5
+// 4
 
 addMat('textures/concrete.png',THREE.NearestFilter,THREE.NearestMipmapNearestFilter,[0.2,0.2]);
 addSprite('textures/gunc.png',THREE.NearestFilter,THREE.NearestFilter);
