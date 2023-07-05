@@ -42,6 +42,8 @@ function addSprite(texture,mafil,mifil){
 	Materials.push(sm);
 }
 
+// mm you like those filler commits
+
 addMat('textures/concrete.png',THREE.NearestFilter,THREE.NearestMipmapNearestFilter,[0.2,0.2]);
 addSprite('textures/gunc.png',THREE.NearestFilter,THREE.NearestFilter);
 addMat('textures/ground.png',THREE.NearestFilter,THREE.NearestFilter); // id 4
