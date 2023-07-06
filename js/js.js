@@ -738,9 +738,7 @@ function update(){
 		let F = (new CANNON.Vec3(FAFA.x,FAFA.y,FAFA.z)).vsub(grabt.position);
 		if (grabt.velocity.length()<25.6) grabt.applyForce(F.scale(128),new CANNON.Vec3(0,0,0));
 		grabt.velocity=grabt.velocity.scale(0.75);
-		//grabt.applyForce(grabt.force.scale(-0.5));
-		//grabt.applyForce(new CANNON.Vec3(0,20,0),new CANNON.Vec3(0,0,0));
-		//grabt.position.set(FAFA.x,FAFA.y,FAFA.z);
+		// 7
 	}
 	
 	if (indexedElements["Sky"]) {
