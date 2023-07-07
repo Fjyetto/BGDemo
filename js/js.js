@@ -738,7 +738,7 @@ function update(){
 		let F = (new CANNON.Vec3(FAFA.x,FAFA.y,FAFA.z)).vsub(grabt.position);
 		if (grabt.velocity.length()<25.6) grabt.applyForce(F.scale(128),new CANNON.Vec3(0,0,0));
 		grabt.velocity=grabt.velocity.scale(0.75);
-		// P.  Glass - Einstein on the beach (1, 2, 3 ,4)
+		// P.  Glass - Einstein on the beach (1, 2, 3, 4, 5, 6)
 	}
 	
 	if (indexedElements["Sky"]) {
